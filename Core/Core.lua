@@ -23,7 +23,7 @@ function AUI:NewModule(Name)
 	-- Create a new module
 	local Module = {
 		Name = Name,
-		Enabled = false,
+		Enabled = false, -- Used to track whether or not the module has been enabled yet this session
 	};
 
 	-- Insert the newly created module into our modules table

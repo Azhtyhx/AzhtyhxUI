@@ -5,13 +5,11 @@
 	Author......: Azhtyhx
 ]]
 
--- Enabled enable/disable functionality of the coordinate frame
-
 -- Setup module
 local Module = AUI:NewModule("Minimap");
 
 -- Module default user settings
-Module.Defaults = {
+local Defaults = {
 	-- TODO
 };
 
@@ -20,7 +18,7 @@ Module.Defaults = {
 -----------------------
 
 -- Enables the use of the mousewheel to zoom the minimap in and out
-function Module:EnableMouseWheel()
+local function EnableMouseWheel()
 	Minimap:EnableMouseWheel(true);
 	Minimap:SetScript("OnMouseWheel", function()
 		if (arg1 > 0) then
@@ -35,13 +33,13 @@ end
 
 -- Moves the minimap slightly to make room for the informational bar
 -- TODO: Check if the informational bar is actually enabled and shown
-function Module:MoveMinimap()
+local function MoveMinimap()
 	MinimapCluster:ClearAllPoints();
 	MinimapCluster:SetPoint("TOPRIGHT", -15, -25);
 end
 
 -- Hides any unused children of this module
-function Module:HideUnusedFrames()
+local function HideUnusedFrames()
 	GameTimeFrame:Hide();
 	MinimapBorderTop:Hide();
 	MinimapZoneTextButton:Hide();
@@ -56,7 +54,7 @@ end
 
 -- Constructs a frame with a fontstring to display the characters' current coordinates
 -- Will refactor this function later
-function Module:SetupCoordinateFrame()
+local function SetupCoordinateFrame()
 	-- Base Frame
 	local Frame = CreateFrame("Frame", "MinimapCoordinateFrame", Minimap);
 	Frame:SetWidth(50);
@@ -69,10 +67,10 @@ function Module:SetupCoordinateFrame()
 	Frame.Text = FontString;
 end
 
-function Module:EnableCoordinateFrame()
+local function EnableCoordinateFrame()
 	-- Create the coordinate frame if not already done
 	if (not MinimapCoordinateFrame) then
-		self:SetupCoordinateFrame();
+		SetupCoordinateFrame();
 	end
 
 	-- Update locals
@@ -97,7 +95,7 @@ function Module:EnableCoordinateFrame()
 	MinimapCoordinateFrame:Show();
 end
 
-function Module:DisableCoordinateFrame()
+local function DisableCoordinateFrame()
 	-- Hide the coordinate frame
 	MinimapCoordinateFrame:Hide();
 
@@ -114,8 +112,8 @@ function Module:Initialize()
 end
 
 function Module:Enable()
-	self:EnableMouseWheel();
-	self:MoveMinimap();
-	self:HideUnusedFrames();
-	self:EnableCoordinateFrame();
+	EnableMouseWheel();
+	MoveMinimap();
+	HideUnusedFrames();
+	EnableCoordinateFrame();
 end
