@@ -1,0 +1,7 @@
+## Interface: 11200
+## Title: Azhtyhx UI
+## Notes: User Interface Modification
+## Author: Azhtyhx
+## SavedVariables: AUIDB
+
+AzhtyhxUI.xml

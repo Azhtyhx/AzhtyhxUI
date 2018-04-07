@@ -1,0 +1,14 @@
+<!--
+	Project.....: AzhtyhxUI
+	File........: AzhtyhxUI.xml
+	Description.: Includes all the files belonging to this AddOn
+	Author......: Azhtyhx
+-->
+
+<Ui>
+
+	<!-- Core -->
+	<Include file="Core\Core.lua"/>
+	<Include file="Core\Init.lua"/>
+
+</Ui>
