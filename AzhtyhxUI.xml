@@ -11,4 +11,7 @@
 	<Include file="Core\Core.lua"/>
 	<Include file="Core\Init.lua"/>
 
+	<!-- Modules -->
+	<Include file="Modules\Minimap.lua"/>
+
 </Ui>

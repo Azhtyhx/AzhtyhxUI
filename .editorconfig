@@ -1,0 +1,11 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# LUA
+[*.lua]
+indent_style = tab
+indent_size = 3
+
+# XML
+[*.xml]
+indent_style = tab
+indent_size = 2
