@@ -5,11 +5,13 @@
 	Author......: Azhtyhx
 ]]
 
+local Modules = AUI.Modules;
+
 local function Initialize()
 	-- Call each registered modules' initialize function if it exists
-	for ModuleName, ModuleData in AUI.Modules do
-		if (ModuleData.Initialize) then
-			ModuleData:Initialize();
+	for Module, Data in Modules do
+		if (Data.Initialize) then
+			Data:Initialize();
 		end
 	end
 end
@@ -32,6 +34,5 @@ InitFrame:SetScript("OnEvent", function()
 
 		-- We no longer need this event
 		this:UnregisterEvent(event);
-		this = nil;
 	end
 end)

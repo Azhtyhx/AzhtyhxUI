@@ -34,7 +34,6 @@ function AUI:NewModule(Name)
 end
 
 -- Returns a module with the specified name if it exists
--- This can probably be designed better
 function AUI:GetModule(Name)
 	return AUI.Modules[Name] or nil;
 end
