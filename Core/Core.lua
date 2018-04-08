@@ -6,11 +6,13 @@
 ]]
 
 -- Setup AddOn namespace
-AUI = {
-	Modules = {}, -- Table to hold any modules
-	Localization = {}, -- Table to hold any localized strings
-	Database = {}, -- Table to hold any user settings
-};
+AUI = {};
+
+local Modules = {}; -- Table to hold any modules
+local Localization = {}; -- Table to hold any localized strings
+local Database = {}; -- Table to hold any user settings
+
+local NumModules = 0;
 
 -- Called by any modules of this addon
 -- Gives us the ability to initalize, enable, and disable each module with ease
@@ -27,15 +29,23 @@ function AUI:NewModule(Name)
 	};
 
 	-- Insert the newly created module into our modules table
-	AUI.Modules[Name] = Module;
+	Modules[NumModules + 1] = Module;
+
+	-- Increment the amount of modules
+	NumModules = NumModules + 1;
 
 	-- Return the created module
 	return Module;
 end
 
--- Returns a module with the specified name if it exists
-function AUI:GetModule(Name)
-	return AUI.Modules[Name] or nil;
+-- Returns a registered module with the specified name or index if it exists
+function AUI:GetModule(Index)
+	return Modules[Index] or nil;
+end
+
+-- Returns the number of registered modules
+function AUI:GetNumModules()
+	return NumModules;
 end
 
 -- Print function for easy logging to chat window

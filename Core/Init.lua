@@ -5,13 +5,15 @@
 	Author......: Azhtyhx
 ]]
 
-local Modules = AUI.Modules;
-
 local function Initialize()
+	local NumModules = AUI:GetNumModules();
+
 	-- Call each registered modules' initialize function if it exists
-	for Module, Data in Modules do
-		if (Data.Initialize) then
-			Data:Initialize();
+	local Module;
+	for i = 1, NumModules do
+		Module = AUI:GetModule(i);
+		if (Module and Module.Initialize) then
+			Module:Initialize();
 		end
 	end
 end

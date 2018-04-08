@@ -5,6 +5,7 @@
 	Author......: Azhtyhx
 ]]
 
+-- Setup module
 local Module = AUI:NewModule("GameMenu");
 
 local function ModifyGameMenu()
@@ -25,6 +26,10 @@ local function ModifyGameMenu()
 	-- Increase the height of the game menu to fit all the widgets
 	GameMenuFrame:SetHeight(255);
 end
+
+---------------
+-- / Setup / --
+---------------
 
 function Module:Enable()
 	ModifyGameMenu();
