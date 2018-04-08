@@ -15,5 +15,6 @@
 	<Include file="Modules\Minimap.lua"/>
 	<Include file="Modules\GameMenu.lua"/>
 	<Include file="Modules\Chat.lua"/>
+	<Include file="Modules\MainMenuBar.lua"/>
 
 </Ui>

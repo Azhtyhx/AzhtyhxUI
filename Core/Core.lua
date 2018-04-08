@@ -9,16 +9,21 @@
 AUI = {};
 
 local Modules = {}; -- Table to hold any modules
+local ModuleKeys = {}; -- Table to hold any module names, used as key when fetching a module with a number
+
 local Localization = {}; -- Table to hold any localized strings
 local Database = {}; -- Table to hold any user settings
-
-local NumModules = 0;
 
 -- Called by any modules of this addon
 -- Gives us the ability to initalize, enable, and disable each module with ease
 function AUI:NewModule(Name)
 	-- We have no name, return
 	if (not Name) then
+		return;
+	end
+
+	-- A module with specified name already exists
+	if (Modules[Name]) then
 		return;
 	end
 
@@ -29,23 +34,29 @@ function AUI:NewModule(Name)
 	};
 
 	-- Insert the newly created module into our modules table
-	Modules[NumModules + 1] = Module;
-
-	-- Increment the amount of modules
-	NumModules = NumModules + 1;
+	Modules[Name] = Module;
+	-- Also store the name in the module names table
+	tinsert(ModuleKeys, Name);
 
 	-- Return the created module
 	return Module;
 end
 
--- Returns a registered module with the specified name or index if it exists
-function AUI:GetModule(Index)
-	return Modules[Index] or nil;
+-- Returns a registered module with the specified key if it exists
+function AUI:GetModule(Key)
+	return Modules[Key] or Modules[ModuleKeys[Key]] or nil;
 end
 
 -- Returns the number of registered modules
 function AUI:GetNumModules()
-	return NumModules;
+	local Count = 0;
+
+	-- Iterate through the modules and increment the count
+	for K in Modules do
+		Count = Count + 1;
+	end
+
+	return Count;
 end
 
 -- Print function for easy logging to chat window

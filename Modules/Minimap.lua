@@ -3,6 +3,8 @@
 	File........: Minimap.lua
 	Description.: Modifies the Minimap of the Blizzard UI
 	Author......: Azhtyhx
+
+	TODO........: Coordinate frame could be turned into an element
 ]]
 
 -- Setup module
