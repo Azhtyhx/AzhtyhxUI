@@ -16,5 +16,7 @@
 	<Include file="Modules\GameMenu.lua"/>
 	<Include file="Modules\Chat.lua"/>
 	<Include file="Modules\MainMenuBar.lua"/>
+	<Include file="Modules\Portraits.lua"/>
+	<Include file="Modules\Auras.lua"/>
 
 </Ui>
