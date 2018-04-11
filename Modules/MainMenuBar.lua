@@ -86,6 +86,33 @@ local function ModifyBars()
 	MainMenuMaxLevelBar3:SetTexture(nil);
 end
 
+local function SetupActionBars()
+	-- Clear it to enable movement
+	MultiBarBottomRight:ClearAllPoints();
+
+	-- Add MultiBarBottomRight to the managed frame positions for automatic re-positioning
+	UIPARENT_MANAGED_FRAME_POSITIONS["MultiBarBottomRight"] = {
+		baseY = 17,
+		bottomLeft = 43,
+		reputation = 9,
+		maxLevel = -5,
+		anchorTo = "ActionButton1",
+		point = "BOTTOMLEFT",
+		rpoint = "TOPLEFT"
+	};
+
+	-- Add a value for bottomRight to the pet and shapeshift action bars
+	UIPARENT_MANAGED_FRAME_POSITIONS["ShapeshiftBarFrame"].bottomRight = 45;
+	UIPARENT_MANAGED_FRAME_POSITIONS["PETACTIONBAR_YPOS"].bottomRight = 43;
+end
+
+local function SetupCastBar()
+	-- Modify the casting bar frame in managed frame positions to account for additional bar
+	UIPARENT_MANAGED_FRAME_POSITIONS["CastingBarFrame"].bottomEither = nil;
+	UIPARENT_MANAGED_FRAME_POSITIONS["CastingBarFrame"].bottomLeft = 40;
+	UIPARENT_MANAGED_FRAME_POSITIONS["CastingBarFrame"].bottomRight = 40;
+end
+
 ---------------
 -- / Setup / --
 ---------------
@@ -94,4 +121,6 @@ function Module:Enable()
 	HideButtons();
 	ModifyFrames();
 	ModifyBars();
+	SetupActionBars();
+	SetupCastBar();
 end

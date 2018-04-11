@@ -19,4 +19,8 @@
 	<Include file="Modules\Portraits.lua"/>
 	<Include file="Modules\Auras.lua"/>
 
+	<Include file="Modules\InfoBar\InfoBar.lua"/>
+	<Include file="Modules\InfoBar\Money.lua"/>
+	<Include file="Modules\InfoBar\Durability.lua"/>
+
 </Ui>
