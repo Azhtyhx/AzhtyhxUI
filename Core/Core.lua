@@ -59,6 +59,10 @@ function AUI:GetNumModules()
 	return Count;
 end
 
+--------------------------
+-- / Helper Functions / --
+--------------------------
+
 -- Print function for easy logging to chat window
 -- Might be moved to another location later on
 function AUI:Print(Message, R, G, B, Frame)
@@ -69,4 +73,39 @@ function AUI:Print(Message, R, G, B, Frame)
 
 	-- Print the message to the specified chat frame or default
 	(Frame or DEFAULT_CHAT_FRAME):AddMessage("|cffffff78AUI:|r " .. Message, R, G, B);
+end
+
+-- Returns the highest integer in the table
+function AUI:MaxValue(Table)
+	-- Default max value to 0 to check against
+	local MaxValue = 0;
+
+	-- Iterate through the table
+	-- If Value is greater than MaxValue, replace
+	for _, Value in pairs(Table) do
+		if (MaxValue < Value) then
+			MaxValue = Value;
+		end
+	end
+
+	-- Return the highest value found
+	return MaxValue;
+end
+
+-- Returns the lowest integer in the table
+--- @MaxValue - The maximum value that can be found inside table
+function AUI:MinValue(Table, MaxValue)
+	-- We need a maximum value to check against in order to get the chain going
+	local MinValue = MaxValue;
+
+	-- Iterate through the table
+	-- If Value is lower than MinValue, replace
+	for _, Value in pairs(Table) do
+		if (MinValue > Value) then
+			MinValue = Value;
+		end
+	end
+
+	-- Return the lowest value found
+	return MinValue;
 end

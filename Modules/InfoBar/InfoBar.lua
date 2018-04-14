@@ -3,14 +3,18 @@
 	File........: InfoBar.lua
 	Description.: Creates informational bars at the top of the screen to hold visual data.
 	Author......: Azhtyhx
+
+	Notes.......: Instead of OnCreate we could raise Enable
 ]]
 
 -- Setup module
 local Module = AUI:NewModule("InfoBar");
 
-local Elements = {
-	Left = {},
-	Right = {},
+local Elements = {};
+
+-- Module defaults
+local Defaults = {
+	
 };
 
 ------------------
@@ -21,9 +25,9 @@ local Elements = {
 --- @Name - The name of the element, also the title text of the tooltip
 --- @Location - Whether the element should be positioned to the right or left
 --- @Index - The order in which this element will be positioned, 1 = corner most, followed by 2 etc
-function Module:NewElement(Name, Location, Index)
+function Module:NewElement(Name)
 	-- We need a name, specified location, and index to continue
-	if (not Name) or (not Location) or (not Index) then
+	if (not Name) then
 		AUI:Print("Error");
 	end
 
@@ -33,25 +37,23 @@ function Module:NewElement(Name, Location, Index)
 	};
 
 	-- Store the element in our table
-	tinsert(Elements[Location], Index, Element);
+	tinsert(Elements, Element);
 
 	-- Return the newly created module
 	return Element;
 end
 
-local function SetFontString(Frame, Name, Font, Layer, hJustify, vJustfiy)
-	local String = Frame:CreateFontString(Name, Layer);
-	String:SetFont("Fonts\\FRIZQT__.TTF", 12);
-
-	if (hJustify) then
-		String:SetJustifyH(hJustify)
+function Module:RegisterDatabase(Name, Database)
+	-- Only continue if we have a name and database
+	-- Could also check if database is a table
+	if (not Name) or (not Database) then
+		return;
 	end
 
-	if (vJustify) then
-		String:SetJustifyV(vJustify)
+	-- Insert into the defaults if not already there
+	if (not Defaults[Name]) then
+		Defaults[Name] = Database;
 	end
-
-	return String;
 end
 
 local function OnClickHandler()
@@ -75,73 +77,67 @@ local function OnLeaveHandler()
 	end
 end
 
-local function ConstructElement(Element, Bar)
-	-- Frame Base
-	local Frame = CreateFrame("Button", "InfoBar"..Element.Name, UIParent);
-	Frame.Name = Element.Name;
-	Frame.Element = Element;
+local function ConstructElement(Element)
+	-- Button Base
+	local Button = CreateFrame("Button", "InfoBar"..Element.Name, InfoBar);
+	Button.Name = Element.Name;
+	Button.Element = Element;
 
-	-- Frame FontString
-	Frame.Text = SetFontString(Frame, Frame:GetName().."Text", nil, "OVERLAY", "LEFT");
-	Frame.Text:SetTextColor(1, 1, 1);
-	Frame.Text:SetShadowColor(0, 0, 0);
-	Frame.Text:SetShadowOffset(1.25, -1.25);
+	-- Button Scripts
+	Button:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+	Button:SetScript("OnClick", OnClickHandler);
+	Button:SetScript("OnEnter", OnEnterHandler);
+	Button:SetScript("OnLeave", OnLeaveHandler);
 
-	-- Frame Scripts
-	Frame:RegisterForClicks("LeftButtonUp", "RightButtonUp");
-	Frame:SetScript("OnClick", OnClickHandler);
-	Frame:SetScript("OnEnter", OnEnterHandler);
-	Frame:SetScript("OnLeave", OnLeaveHandler);
+	-- Button Text
+	Button.Text = Button:CreateFontString(Name, Layer);
+	Button.Text:SetFont("Fonts\\FRIZQT__.TTF", 12);
+	Button.Text:SetJustifyH("LEFT");
 
-	-- Specific element functionality
+	-- Position the Text
+	local Anchors = Defaults[Element.Name].Anchors;
+	Button.Text:SetPoint(Anchors.Point, InfoBar, Anchors.xOffset, 0);
+
+	-- Wrap the Text with the Button
+	Button:SetAllPoints(Button.Text);
+
+	Button.Text:SetText("Debug Text");
+
+	-- Element specific functionality
 	if (Element.OnCreate) then
-		Element:OnCreate(Frame);
+		Element:OnCreate(Button);
 	end
-
-	-- Position the fontstring
-	local Anchor = InfoBarLeft;
-	Frame:SetParent(Anchor);
-	Frame.Text:SetPoint("BOTTOMLEFT", Anchor, "BOTTOMLEFT", 5, 5);
-
-	-- Wrap the fontstring with the frame
-	Frame:SetAllPoints(Frame.Text);
-
-	-- Frame Texture
-	Frame.Texture = Frame:CreateTexture("DebugTexture", "ARTOWKR");
-	Frame.Texture:SetTexture("Interface\\AddOns\\AzhtyhxUI\\Media\\InfoBar\\InfoBarElementLeft");
-	Frame.Texture:SetAllPoints(Frame);
-
-	-- Set the text and display the frame
-	Frame.Text:SetText(Element.Name);
-	Frame:Show();
 end
 
-local function ConstructElements(Bar)
-	-- We construct all the elements here, and point to the elements own
+local function ConstructElements()
+	-- We construct all the elements here, and point to the elements' own
 	-- OnClick and OnEnter/OnLeave functions
 	-- Any other specific functionality is set up locally by each element
-	for K, V in Elements[Bar] do
-		ConstructElement(V, Bar);
+	for K, V in Elements do
+		-- A check will be done here later to find out if element is actually
+		-- enabled by the user
+		ConstructElement(V);
 	end
 end
 
+local function SetupInfoBar()
+	-- Just creating an empty frame to hold our elements
+	local Frame = CreateFrame("Frame", "InfoBar", UIParent);
+	Frame:SetWidth(GetScreenWidth() + 12);
+	Frame:SetHeight(32);
+	Frame:SetPoint("TOP", 0, 6);
 
+	-- Frame Backdrop
+	Frame:SetBackdrop({
+		bgFile = "Interface/Tooltips/UI-Tooltip-Background", 
+      edgeFile = "Interface/Tooltips/UI-Tooltip-Border", 
+      tile = true, tileSize = 16, edgeSize = 16, 
+      insets = { left = 4, right = 4, top = 4, bottom = 4 }
+   });
+	Frame:SetBackdropColor(0.1, 0.1, 0.1, 0.8);
 
-local function ConstructInfoBar(Name, Point)
-	local Frame = CreateFrame("Frame", "InfoBar"..Name, UIParent);
-	Frame:SetWidth(28);
-	Frame:SetHeight(28);
-	Frame:SetPoint(Point, 0, 0);
-end
-
-local function SetupBars()
-	ConstructInfoBar("Left", "TOPLEFT");
-	ConstructInfoBar("Right", "TOPRIGHT");
-end
-
-local function SetupElements()
-	ConstructElements("Left");
-	ConstructElements("Right");
+	-- Display the frame
+	Frame:Show();
 end
 
 ---------------
@@ -149,10 +145,15 @@ end
 ---------------
 
 function Module:Initialize()
-	
+	-- Initialize all elements
+	for K, V in Elements do
+		if (V.Initialize) then
+			V:Initialize();
+		end
+	end
 end
 
 function Module:Enable()
-	SetupBars();
-	SetupElements();
+	SetupInfoBar();
+	ConstructElements();
 end
