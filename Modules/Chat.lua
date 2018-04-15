@@ -41,11 +41,26 @@ local function HideButtons()
       getglobal(Frame:GetName().."DownButton"):Hide();
       getglobal(Frame:GetName().."UpButton"):Hide();
 
+      local BottomButton = getglobal(Frame:GetName().."BottomButton");
+     	BottomButton:Hide();
+
 		-- Override to avoid having the buttons showing up again
 		Frame:SetScript("OnShow", function()
-			getglobal(Frame:GetName().."BottomButton"):Show();
+			BottomButton:Show();
 			SetChatWindowShown(Frame:GetID(), 1);
 		end)
+
+		-- Not sure that I like this. Works for now I guess
+		BottomButton:SetScript("OnUpdate", function()
+			if (Frame:AtBottom()) then
+				BottomButton:SetAlpha(0);
+			else
+				BottomButton:SetAlpha(1);
+			end
+		end)
+
+		-- Show the BottomButton
+		BottomButton:Show();
 	end
 end
 
