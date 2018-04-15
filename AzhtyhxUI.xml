@@ -23,5 +23,6 @@
 	<Include file="Modules\InfoBar\Money.lua"/>
 	<Include file="Modules\InfoBar\Durability.lua"/>
 	<Include file="Modules\InfoBar\Time.lua"/>
+	<Include file="Modules\InfoBar\Friends.lua"/>
 
 </Ui>

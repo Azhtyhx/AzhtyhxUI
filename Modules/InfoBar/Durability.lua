@@ -53,7 +53,7 @@ local function UpdateDurability()
 				if (TooltipLine) then
 					local Text = TooltipLine:GetText();
 					if (Text) then
-						local _, _, CurDurability, MaxDurability = string.find(Text, "^Durability (%d+) / (%d+)$");
+						local _, _, CurDurability, MaxDurability = string.find(Text, "^Durability (%d+) / (%d+)$"); -- Localize me
 						if (CurDurability and MaxDurability) then
 							-- Add the durability of the item to the table for future use
 							ItemDurability[LocalName] = CurDurability and CurDurability / MaxDurability or nil;
@@ -66,7 +66,7 @@ local function UpdateDurability()
 
 	-- Find the lowest durability percentage for button text display
 	local DisplayDurability = AUI:MinValue(ItemDurability, 1) * 100 or nil;
-	this.Text:SetText(string.format("Armor: %d%%", DisplayDurability or 100));
+	this.Text:SetText(string.format("Armor: %d%%", DisplayDurability or 100)); -- Localize me
 
 	-- We also want to update the actual tooltip in case we are showing it during update
 	
@@ -112,9 +112,11 @@ local function SetupTooltip()
 end
 
 local function HideDurabilityFrame()
-	DurabilityFrame:Hide(); -- In case it's already shown
-	DurabilityFrame:SetScript("OnLoad", nil); -- Make sure it doesn't come back
-	DurabilityFrame:SetScript("OnEvent", nil);
+	-- The durability frame need to fire it's OnEvent callback at least once
+	-- Otherwise the ActionBars go haywire
+	-- That is why I keep the PLAYER_ENTERING_WORLD event
+	DurabilityFrame:SetScript("OnUpdate", nil);
+	DurabilityFrame:UnregisterEvent("UPDATE_INVENTORY_ALERTS");
 end
 
 function Element:OnCreate(Button)
