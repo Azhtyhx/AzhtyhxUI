@@ -24,5 +24,6 @@
 	<Include file="Modules\InfoBar\Durability.lua"/>
 	<Include file="Modules\InfoBar\Time.lua"/>
 	<Include file="Modules\InfoBar\Friends.lua"/>
+	<Include file="Modules\InfoBar\Guild.lua"/>
 
 </Ui>

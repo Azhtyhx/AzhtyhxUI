@@ -68,7 +68,7 @@ end
 ---------------
 
 function Element:OnCreate(Button)
-	-- Calling this function to query server for social information
+	-- Calling this function to query server for friends information
 	-- in order for said information to be available on login
 	ShowFriends();
 

@@ -65,10 +65,11 @@ local function UpdateDurability()
 	end
 
 	-- Find the lowest durability percentage for button text display
-	local DisplayDurability = AUI:MinValue(ItemDurability, 1) * 100 or nil;
+	-- Max value has to be higher than 1, otherwise 100% won't update properly
+	local DisplayDurability = AUI:MinValue(ItemDurability, 1.1) * 100 or nil;
 	this.Text:SetText(string.format("Armor: %d%%", DisplayDurability or 100)); -- Localize me
 
-	-- We also want to update the actual tooltip in case we are showing it during update
+	-- We also want to update the actual tooltip in case we are showing it during this update
 	
 end
 
